@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="2.0">
+    <meta>
+        <identity>
+            <uri>urn:uk:co:rsbatechnology:lang:graalvm</uri>
+            <version>0.0.1</version>
+        </identity>
+        <info>
+            <name>Lang / GraalVM</name>
+            <description>GraalVM language runtime</description>
+        </info>
+    </meta>
+
+	<rootspace>
+
+		<accessor>
+			<id>GraalVMRuntime</id>
+			<name>GraalVM</name>
+			<description>GraalVM Runtime</description>
+			<grammar>
+				<active>
+					<identifier>active:graalvm</identifier>
+					<argument name="operator" min="1" max="1" desc="Script to execute"/>
+					<argument name="graalvm-language" min="1" max="1" desc="GraalVM language"/>
+					<varargs/>
+				</active>
+			</grammar>
+			<class>uk.co.rsbatechnology.lang.graalvm.GraalVMRuntime</class>
+			<icon>res:/uk/co/rsbatechnology/lang/graalvm/doc/icon.png</icon>
+		</accessor>
+				
+		<literal type="string" uri="res:/js/script">
+		    nkContext = Polyglot.import("nkContext");
+			let str = nkContext.source("res:/dummy"));
+			str;
+		</literal>
+		
+		<literal type="string" uri="res:/r/script">
+			<![CDATA[
+			    nkContext <- import('nkContext');
+				str <- nkContext$source("res:/dummy");
+				str; # Return obtained string representation as the return from the script
+			 ]]>
+		</literal>
+				
+		<literal type="string" uri="res:/dummy">
+		    Hello from GraalVM!
+		</literal>
+	</rootspace>
+
+
+</module>

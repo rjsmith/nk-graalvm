@@ -30,22 +30,44 @@
 		</accessor>
 				
 		<literal type="string" uri="res:/js/script">
-		    nkContext = Polyglot.import("nkContext");
-			let str = nkContext.source("res:/dummy"));
-			str;
+		    nkContext = Polyglot.import("context");
+			let str = nkContext.source("res:/dummy");
+			nkContext.createResponseFrom(str);
 		</literal>
 		
 		<literal type="string" uri="res:/r/script">
 			<![CDATA[
-			    nkContext <- import('nkContext');
+			    nkContext <- import('context');
 				str <- nkContext$source("res:/dummy");
-				str; # Return obtained string representation as the return from the script
+				nkContext$createResponseFrom(str);
 			 ]]>
 		</literal>
 				
+		<literal type="string" uri="res:/python/script">
+			<![CDATA[
+import polyglot
+nk_context = polyglot.import_value('context')
+str = nk_context.source("res:/dummy")
+nk_context.createResponseFrom(str)
+			 ]]>
+		</literal>				
+			
+		<literal type="string" uri="res:/ruby/script">
+			<![CDATA[
+				nkContext = Polyglot.import("context")
+				str = nkContext.source("res:/dummy");
+				nkContext.createResponseFrom(str);
+			 ]]>		
+		</literal>
+			
 		<literal type="string" uri="res:/dummy">
 		    Hello from GraalVM!
 		</literal>
+		
+		<fileset>
+			<glob>resources/*.bc</glob>
+		</fileset>
+		
 	</rootspace>
 
 

@@ -6,6 +6,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/GraalVM"/>
 	<classpathentry kind="lib" path="/Users/richardsmith/.gradle/caches/modules-2/files-2.1/urn.org.netkernel/mod.hds/1.5.1/ec30ceaec4a6a4b3b68ef1cac8ff34f66f2c330e/mod.hds-1.5.1.jar">
 		<attributes>
@@ -57,6 +58,5 @@
 			<attribute name="gradle_used_by_scope" value="test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
-	<classpathentry kind="output" path="build/urn.uk.co.rsbatechnology.lang.graalvm.js-0.0.1"/>
+	<classpathentry kind="output" path="bin/default"/>
 </classpath>

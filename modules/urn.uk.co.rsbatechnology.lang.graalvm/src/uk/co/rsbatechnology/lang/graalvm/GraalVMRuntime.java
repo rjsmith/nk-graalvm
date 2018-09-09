@@ -3,11 +3,19 @@ package uk.co.rsbatechnology.lang.graalvm;
 import org.netkernel.layer0.nkf.INKFRequestContext;
 import org.netkernel.layer0.nkf.INKFRequestReadOnly;
 import org.netkernel.layer0.nkf.NKFException;
+import org.netkernel.layer0.representation.IReadableBinaryStreamRepresentation;
+import org.netkernel.layer0.util.RequestScopeClassLoader;
 import org.netkernel.module.standard.endpoint.StandardAccessorImpl;
+import org.netkernel.urii.impl.NetKernelException;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 import org.graalvm.polyglot.*;
+import org.graalvm.polyglot.io.ByteSequence;
 
 public class GraalVMRuntime extends StandardAccessorImpl  {
     
@@ -25,9 +33,7 @@ public class GraalVMRuntime extends StandardAccessorImpl  {
         {   
             //String sourceIdentifier=context.getThisRequest().getArgumentValue("operator");
             String graalVMLanguage=context.getThisRequest().getArgumentValue("graalvm-language");
-                        
-            String source = context.source("arg:operator", String.class);
-        
+                               
             Context polyglot = Context.newBuilder(graalVMLanguage).allowAllAccess(true).build();
             
             // Check language is available at runtime
@@ -37,37 +43,40 @@ public class GraalVMRuntime extends StandardAccessorImpl  {
             }
             
             // Add NK context object to guest language scope as a GraalVM Polyglot value.
-            polyglot.getPolyglotBindings().putMember("nkContext", context);
+            polyglot.getPolyglotBindings().putMember("context", context);
 
-            try {
-                Value str = polyglot.eval(graalVMLanguage, source);
-                String result = str.asString();
-                
-                context.createResponseFrom(result);
-                
-            } catch (PolyglotException pe) {
-                pe.printStackTrace();
-            }
-        
-        
-/*            ((NKFContextImpl)context).setRuntimeSourceIdentifier(sourceIdentifier);
             ClassLoader oldCL=Thread.currentThread().getContextClassLoader();
-            try
-            {   ClassLoader CL=new RequestScopeClassLoader(context.getKernelContext().getThisKernelRequest().getRequestScope());
+            try {
+                
+                ClassLoader CL=new RequestScopeClassLoader(context.getKernelContext().getThisKernelRequest().getRequestScope());
                 Thread.currentThread().setContextClassLoader(CL);
-                CompiledScript s=context.source("arg:operator", CompiledScript.class);
-                Bindings b=new SimpleBindings();
-                b.put("context", context);
-                s.eval(b);
-            }
-            catch(ScriptException e)
-            {   
-                NetKernelException nke=new NetKernelException("JavascriptException", "line: "+e.getLineNumber()+"  "+e.getMessage(), e);
+                
+                switch (graalVMLanguage) {
+                
+                case "llvm":
+                    IReadableBinaryStreamRepresentation bstream = context.source("arg:operator", IReadableBinaryStreamRepresentation.class);
+                    InputStream stream = bstream.getInputStream();
+                    byte[] targetArray = new byte[stream.available()];
+                    stream.read(targetArray);
+
+                    Source source = Source.newBuilder("llvm", ByteSequence.create(targetArray), "<literal>").buildLiteral();
+                    polyglot.eval(source);
+                    
+                    break;
+                default:
+                    polyglot.eval(graalVMLanguage, context.source("arg:operator", String.class));    
+                }
+                
+                
+            } catch (PolyglotException e) {
+                e.printStackTrace();
+                NetKernelException nke=new NetKernelException("GraalVMException", e.getMessage(), e);
                 throw nke;
+            } finally {
+                Thread.currentThread().setContextClassLoader(oldCL);                
             }
-            finally
-            {   Thread.currentThread().setContextClassLoader(oldCL);                
-            }*/
+          
+     
         }
     }
     

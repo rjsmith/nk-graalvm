@@ -13,6 +13,9 @@ apply plugin: 'idea'
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compileOnly group: 'urn.org.netkernel', name: 'mod.hds', version: '[1.1.1,)'
+
+    // https://mvnrepository.com/artifact/org.graalvm/graal-sdk
+    compile group: 'org.graalvm', name: 'graal-sdk', version: '1.0.0-rc6'
 }
 
 netkernel {

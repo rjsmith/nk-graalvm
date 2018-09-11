@@ -11,7 +11,7 @@
         </info>
     </meta>
 
-	<rootspace>
+	<rootspace name="Lang / GraalVM" uri="urn:uk:co:rsbatechnology:lang:graalvm" public="true">
 
 		<accessor>
 			<id>GraalVMRuntime</id>
@@ -29,6 +29,10 @@
 			<icon>res:/uk/co/rsbatechnology/lang/graalvm/doc/icon.png</icon>
 		</accessor>
 				
+	</rootspace>
+
+	<rootspace name="Lang / GraalVM / Examples" uri="urn:uk:co:rsbatechnology:lang:graalvm:examples" public="true">
+	
 		<literal type="string" uri="res:/js/script">
 		    nkContext = Polyglot.import("context");
 			let str = nkContext.source("res:/dummy");
@@ -68,7 +72,10 @@ nk_context.createResponseFrom(str)
 			<glob>resources/*.bc</glob>
 		</fileset>
 		
+		<import>
+			<uri>urn:uk:co:rsbatechnology:lang:graalvm</uri>
+		</import>	
+	
 	</rootspace>
-
 
 </module>

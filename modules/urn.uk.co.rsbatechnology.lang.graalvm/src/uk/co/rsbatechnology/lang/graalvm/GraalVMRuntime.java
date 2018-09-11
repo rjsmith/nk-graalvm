@@ -58,9 +58,10 @@ public class GraalVMRuntime extends StandardAccessorImpl  {
                     InputStream stream = bstream.getInputStream();
                     byte[] targetArray = new byte[stream.available()];
                     stream.read(targetArray);
-
                     Source source = Source.newBuilder("llvm", ByteSequence.create(targetArray), "<literal>").buildLiteral();
-                    polyglot.eval(source);
+                    
+                    Value cpart = polyglot.eval(source);
+                    cpart.getMember("main").execute();
                     
                     break;
                 default:
